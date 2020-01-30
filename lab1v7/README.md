@@ -156,6 +156,7 @@ chasing a bug over frequent recompilations.
 
 ## Windows
 
+### Jini middleware
 1. Run ```test/bin/pc/r1_httpd.bat``` to launch the HTTP server. It opens in a separate,
 minimized window labelled httpd. To shutdown the HTTP server, close that window.
 1. Run ```test/bin/pc/r2_rmid.bat``` to start the RMI deaemon. It opens in a separate,
@@ -166,43 +167,26 @@ startup it registers itself with rmid as an activatable service. As
 a result, later output from the lookup server is printed in the rmid
 window.
 
-Assuming all goes well, the Jini middleware is now running.
+### Chat server
+Run ```test/bin/pc/chatserver.bat```. Use -h tag to see commandline options and exit.
 
-1. Starting a chat server: Open a new command window, e.g. with: START CMD
-1. Run chatserver.bat. To see commandline options and exit, run ```chatserver -h```
-1. Starting a chat client: Open a new command window, e.g. with: ```START CMD```
-1. Run chatclient.bat
+### Chat client
+Run ```test/bin/pc/chatclient.bat```.
 
 ## Linux, Mac
 
-Mac users may want to make sure that the unix script files have
-proper line termination characters (^M) for their system.
-
-On Ubuntu, the keyboard command ctrl+alt-t opens a new Gnome
-Terminal application, with the current directory being your home
-directory.
-
-While IN the Gnome terminal application, the keyboard command
-ctrl+shift+n opens a new terminal with the current directory
-unchanged. This is very helpful below.
-
-1. Run ```test/bin/unix/r1_httpd.sh```. This starts the HTTP server. To shut it down, type ctrl+c twice.
-1. Run ```test/bin/unix/r2_rmid.sh```. This starts the RMI daemon. 
+### Jini middleware
+1. Start *HTTP server* by running ```test/bin/unix/r1_httpd.sh```. To shut it down, type ctrl+c twice.
+1. Start *RMI daemon* by running ```test/bin/unix/r2_rmid.sh```.
 To shutdown the RMI daemon (and reggie), give the command ```rmid -stop``` in some other command shell (terminal).
-1. Run ```test/bin/unix/r3_reggie.sh```. This starts the Jini lookup server (reggie). Upon startup it registers itself 
+1. Start *Jini lookup server (reggie)* by running ```test/bin/unix/r3_reggie.sh```. Upon startup it registers itself 
 with rmid as an activatable service. As a result, later output from the lookup server is printed in the rmid window.
 
-Assuming all goes well, the Jini middleware is now running.
+### Chat server
+Run ```test/bin/unix/chatserver.sh```. Use -h tag to see commandline options and exit.
 
-### Starting a chat server:
-
-Run ```test/bin/unix/chatserver.sh```.
-
-To see commandline options and exit, run ```test/bin/unix/chatserver.sh -h```.
-
-### Starting a chat client:
-
-Open a new command shell in the test/bin/unix directory and run ```test/bin/unix/chatclient.sh```.
+### Chat client
+Run ```test/bin/unix/chatclient.sh```.
 
 # Testing
 
@@ -217,9 +201,9 @@ registrations for at least 5 minutes after the service has died, so
 there is a risk of old or stale entries conflicting with new code.
 
 
+# Changes to Assignment
 
-
-### 2018-08-22: Changes in lab 1 version 7
+## 2018-08-22: Changes in lab 1 version 7
 
 - Source code and compilation brought up to be compatible with Java 5
   and upwards.

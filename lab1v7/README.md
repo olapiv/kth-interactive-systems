@@ -10,46 +10,29 @@ Instead, a small and general bootstrap program (JarRunner.jar) is
 used, and when executed with the correct parameters it fetches the
 real program from a web server and runs it.
 
-Your assignment is to select a development task from a list of
+The assignment is to select a development task from a list of
 alternatives (given separately), and then to modify the system
-according to that task. This text describes the technical setup of the
-system and how to work with it.
+according to that task.
 
-This distribution has two major parts:
+This distribution has two directories:
+1. [develop](develop): The application sources and the files needed to compile and build
+    them.
+1. [test](test): Files that start the Jini service infrastructure and run the
+    chatserver and client.
+    
 
-  - The application sources and the files needed to compile and build
-    them. These files are found in the   develop   subdirectory.
-
-  - Files that start the Jini service infrastructure and runs the
-    chatserver and client. These files reside in the   test   sub-
-    directory.
-
-
-There will be several technical points to go through, but before that
-some emphasis on things that can be learned from this excercise:
-
-  - An application deployed on-demand from a webserver is much easier
-    to maintain for a large group of users, since upgrades only are
-    done on the webserver. No need to run around among users or rely
-    on their ability to perform the upgrade themselves.
-
-  - A separation of the development and test environment reflects how
-    the program will actually be used. When the compiler and the
-    runtime are on two different computer systems it is much
-    easier to spot incompatibilities between them.
-
-  - Dynamic discovery of services through the Jini middleware
-    illustrates flexibility in a client-server or peer-to-peer
-    system. Services and clients can be added, moved, and removed
-    dynamically, without having to reconfigure the components.
+You must choose a webserver (a default is provided)
 
 
-# Preparation
+# Intended Learnings from Assignment
 
-Initially there are some choices to be made.
-
-- You must select a development and test platform (Mac, Linux or Windows)
-- You must choose a webserver (a default is provided)
+1. An application deployed on-demand from a webserver is much easier to maintain for a large group of users, since 
+upgrades only are done on the webserver. No need to run around among users or rely on their ability to perform the 
+upgrade themselves.
+1. A separation of the development and test environment reflects how the program will actually be used. When the 
+compiler and the runtime are on two different computer systems it is much easier to spot incompatibilities between them.
+1. Dynamic discovery of services through the Jini middleware illustrates flexibility in a client-server or peer-to-peer
+system. Services and clients can be added, moved, and removed dynamically, without having to reconfigure the components.
 
 # Development platform
 
@@ -57,40 +40,27 @@ The distribution as given was verified (August 2018) on Ubuntu
 version 18, and Windows 7. At this time the Java source level was
 raised from Java 1.4 to be compatible with Java 5, 6, 7, and 8.
 
-Your computer should have 
+Required:
+- Java SDK 1.5 or later
 
-- Windows, Mac/OS, or Linux, of a recently modern flavour.
-- Java SDK 1.5 or later.
-- emacs (or some other source-code editor)
-- ant (Another Neat Tool) is available from ant.apache.org and is used
-to compile, build, and install the software. Instructions for ant
-are in the file build.xml.
+Helpful:
+- ant - available from ant.apache.org and is used to compile, build, and install the software. Instructions for ant are 
+in the file [build.xml](./develop/build.xml).
 
+As an alternative to ant, the develop/bat directory contains Windows BAT-files that help with compilation, building, 
+and installation.
 
+In order to build and install the software by other means than ant or Windows BAT-files, the general outline is this 
+(see [build.xml](./develop/build.xml) for details).
 
-As an alternative to ant, the develop/bat directory contains Windows
-BAT-files that helps with compilation, building, and installation.
-
-It may be possible to use an IDE for development, but this is not
-supported.
-
-In order to build and install the software by other means than ant
-or Windows BAT-files, the general outline is this (see build.xml for
-details):
-
-- Compile the sources into class files, using the provided
-libraries. The develop/build directory is the recommended target
-for class files.
-
-- Put the class files in develop/build into jar-files, using the
-manifest files in develop/mf. Put the jar-files in the
-develop/dist directory.
-
-- Copy the jar-files in develop/dist to test/cbs
-
-- (Once) Make sure that the files in develop/lib (jini-core.jar,
-jini-ext.jar, and reggie-dl.jar) are copied to the test/cbs
-directory.
+1. Compile the sources into class files, using the provided libraries. The [develop/build](./develop/build) directory 
+is the recommended target for class files.
+1. Put the class files in develop/build into jar-files, using the manifest files in [develop/mf](./develop/mf). Put the 
+jar-files in the [develop/dist](./develop/dist) directory.
+1. Copy the jar-files in [develop/dist](./develop/dist) to [test/cbs](./test/cbs)
+1. (Once) Make sure that the files in [develop/lib](./develop/lib) ([jini-core.jar](./develop/lib/jini-core.jar), 
+[jini-ext.jar](./develop/lib/jini-ext.jar), and  [reggie-dl.jar](./develop/lib/reggie-dl.jar)) are copied to the 
+[test/cbs](./test/cbs) directory.
 
 
 # Deployment and codebase webserver
@@ -110,14 +80,12 @@ URL to the applications as they start, and to arrange for an easy
 way to upload new versions of the jar files each time you rebuild
 the system.
 
-The CHAT system needs these files in the codebase server:
-
-- test/cbs/jini-core.jar   The Jini middleware
-- test/cbs/jini-ext.jar    The Jini middleware
-- test/cbs/reggie-dl.jar   The Jini middleware
----
-- test/cbs/ChatServer.jar  The chat server
-- test/cbs/ChatClient.jar  The chat client
+The CHAT system needs the following files in the codebase server:
+- [test/cbs/jini-core.jar](test/cbs/jini-core.jar)   The Jini middleware
+- [test/cbs/jini-ext.jar](test/cbs/jini-ext.jar)    The Jini middleware
+- [test/cbs/reggie-dl.jar](test/cbs/reggie-dl.jar)   The Jini middleware
+- [test/cbs/ChatServer.jar](test/cbs/ChatServer.jar)  The chat server
+- [test/cbs/ChatClient.jar](test/cbs/ChatClient.jar)  The chat client
 
 
 # Testing platform
@@ -129,43 +97,33 @@ computer.
 
 # Installing
 
-Installation is easy, just unzip the distribution archive into a
-folder of your choice.
+1. Unzip the distribution. If you pick a non-default directory for installation, edit the "path to webserver directory"
+in [develop/build.xml](develop/build.xml).
+1. Verify that you are able to:
+    - Compile the sources
+    - Install jar-files on the webserver:
+        * jini-core.jar              copied from develop/lib
+        * jini-ext.jar               copied from develop/lib
+        * reggie-dl.jar              copied from develop/lib
+        * ChatClient.jar             compiled from sources
+        * ChatServer.jar             compiled from sources
+1. Once the webserver is running, verify that files can be fetched by opening a web browser and pointing it to the 
+URLs of the files.
 
-If you pick a non-default directory for installation, edit:
-
-  develop/build.xml              Path to webserver directory
-
-Verify that you are able to:
-- compile the sources
-- install jar-files on the webserver:
-    * jini-core.jar              copied from develop/lib
-    * jini-ext.jar               copied from develop/lib
-    * reggie-dl.jar              copied from develop/lib
-    * ChatClient.jar             compiled from sources
-    * ChatServer.jar             compiled from sources
-- Once the webserver is running, verify that files can be fetched
-  by opening a web browser and pointing it to the URLs of the
-  files.
-
-It is important that you are able to automate the installation on
-the webserver, because it is otherwise easy to forget that step when
-chasing a bug over frequent recompilations.
+It is important that you are able to automate the installation on the webserver, because it is otherwise easy to forget 
+that step when chasing a bug over frequent recompilations.
 
 # Running the System
 
 ## Windows
 
 ### Jini middleware
-1. Run ```test/bin/pc/r1_httpd.bat``` to launch the HTTP server. It opens in a separate,
-minimized window labelled httpd. To shutdown the HTTP server, close that window.
-1. Run ```test/bin/pc/r2_rmid.bat``` to start the RMI deaemon. It opens in a separate,
-minimized window. To shutdown the RMI daemon (and reggie), give the
-command rmid -stop in any command window with a listening prompt.
-1. Run ```test/bin/pc/r3_reggie.bat``` to start the Jini lookup server (reggie). Upon
-startup it registers itself with rmid as an activatable service. As
-a result, later output from the lookup server is printed in the rmid
-window.
+1. Start **HTTP server** by running ```test/bin/pc/r1_httpd.bat```. It opens in a separate, minimized window labelled 
+httpd. To shutdown the HTTP server, close that window.
+1. Start **RMI deaemon** by running ```test/bin/pc/r2_rmid.bat```. It opens in a separate, minimized window. To 
+shutdown the RMI daemon (and reggie), give the command rmid -stop in any command window with a listening prompt.
+1. Start **Jini lookup server (reggie)** by running ```test/bin/pc/r3_reggie.bat```. Upon startup it registers itself with 
+rmid as an activatable service. As a result, later output from the lookup server is printed in the rmid window.
 
 ### Chat server
 Run ```test/bin/pc/chatserver.bat```. Use -h tag to see commandline options and exit.
@@ -176,10 +134,10 @@ Run ```test/bin/pc/chatclient.bat```.
 ## Linux, Mac
 
 ### Jini middleware
-1. Start *HTTP server* by running ```test/bin/unix/r1_httpd.sh```. To shut it down, type ctrl+c twice.
-1. Start *RMI daemon* by running ```test/bin/unix/r2_rmid.sh```.
-To shutdown the RMI daemon (and reggie), give the command ```rmid -stop``` in some other command shell (terminal).
-1. Start *Jini lookup server (reggie)* by running ```test/bin/unix/r3_reggie.sh```. Upon startup it registers itself 
+1. Start **HTTP server** by running ```test/bin/unix/r1_httpd.sh```. To shut it down, type ctrl+c twice.
+1. Start **RMI daemon** by running ```test/bin/unix/r2_rmid.sh```. To shutdown the RMI daemon (and reggie), give the 
+command ```rmid -stop``` in some other command shell (terminal).
+1. Start **Jini lookup server (reggie)** by running ```test/bin/unix/r3_reggie.sh```. Upon startup it registers itself 
 with rmid as an activatable service. As a result, later output from the lookup server is printed in the rmid window.
 
 ### Chat server

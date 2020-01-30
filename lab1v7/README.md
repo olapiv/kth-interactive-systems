@@ -42,12 +42,9 @@ raised from Java 1.4 to be compatible with Java 5, 6, 7, and 8.
 
 Required:
 - Java SDK 1.5 or later
-
 Helpful:
 - ant - available from ant.apache.org and is used to compile, build, and install the software. Instructions for ant are 
-in the file [build.xml](./develop/build.xml).
-
-As an alternative to ant, the develop/bat directory contains Windows BAT-files that help with compilation, building, 
+in the file [build.xml](./develop/build.xml). As an alternative to ant, the [develop/bat](./develop/bat) directory contains Windows BAT-files that help with compilation, building, 
 and installation.
 
 In order to build and install the software by other means than ant or Windows BAT-files, the general outline is this 
@@ -57,28 +54,22 @@ In order to build and install the software by other means than ant or Windows BA
 is the recommended target for class files.
 1. Put the class files in develop/build into jar-files, using the manifest files in [develop/mf](./develop/mf). Put the 
 jar-files in the [develop/dist](./develop/dist) directory.
-1. Copy the jar-files in [develop/dist](./develop/dist) to [test/cbs](./test/cbs)
+1. Copy the jar-files in [develop/dist](./develop/dist) to [test/cbs](./test/cbs).
 1. (Once) Make sure that the files in [develop/lib](./develop/lib) ([jini-core.jar](./develop/lib/jini-core.jar), 
 [jini-ext.jar](./develop/lib/jini-ext.jar), and  [reggie-dl.jar](./develop/lib/reggie-dl.jar)) are copied to the 
 [test/cbs](./test/cbs) directory.
 
 
 # Deployment and codebase webserver
+A critical component of the system is the codebase server. This consists of a web-server that can serve class-files to 
+the applications as they need them. A small web-server is provided with this distribution, and its default codebase 
+(the directory from which it serves its files) is in the [test/cbs](test/cbs) directory. The script 
+[test/bin/pc/r1_httpd.bat](test/bin/pc/r1_httpd.bat) starts the web-server and its code is in the 
+[test/lib/tools.jar](test/lib/tools.jar) archive which is part of the Jini distribution.
 
-A critical component of the system is the codebase server. This
-consists of a web-server that can serve class-files to the
-applications as they need them. A small web-server is provided with
-this distribution, and its default codebase (the directory from
-which it serves its files) is in the test/cbs directory. The script
-test/bin/pc/r1_httpd.bat starts the web-server and its code is in
-the lib/tools.jar archive which is part of the Jini distribution.
-
-However, if you have access to another webserver which you think
-would be better for you, you can use that. Just remember to change
-the launching scripts in test/bin/{pc,unix} to provide the correct
-URL to the applications as they start, and to arrange for an easy
-way to upload new versions of the jar files each time you rebuild
-the system.
+However, if you have access to another webserver which you think would be better for you, you can use that. Just 
+remember to change the launching scripts in test/bin/{pc,unix} to provide the correct URL to the applications as they 
+start, and to arrange for an easy way to upload new versions of the jar files each time you rebuild the system.
 
 The CHAT system needs the following files in the codebase server:
 - [test/cbs/jini-core.jar](test/cbs/jini-core.jar)   The Jini middleware

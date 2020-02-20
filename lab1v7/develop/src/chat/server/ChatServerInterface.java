@@ -6,9 +6,6 @@
 
 package chat.server;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
 import net.jini.core.event.RemoteEventListener;
 
 /**
@@ -24,7 +21,7 @@ public interface ChatServerInterface
    * distributed to registered ChatClientNotificationInterfaces.
    * @param msg The message.
    */
-  public void say (String msg)
+  public void say (Message msg)
     throws java.rmi.RemoteException;
 
   /**

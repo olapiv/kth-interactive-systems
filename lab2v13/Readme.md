@@ -1,4 +1,4 @@
-# Game of Tag for mobile agents
+# Game of Tag for Mobile Agents
 
 This is lab TAG, the game of Tag for mobile agents.
 
@@ -9,15 +9,31 @@ This distribution contains the working source code for:
 
 ## Install
 
- 1. Install ant (http://ant.apache.org/)
- 2. Compile develop/build.xml file with ant: ```ant install```
- 3. Install jar-files in test branch: ```ant install```
+1. Install ant (http://ant.apache.org/)
+2. Compile sources and compose the through jar-filesdevelop/build.xml file with ant: ```ant```
+3. Install jar-files in test branch: ```ant install```
 
-Run ```ant clean``` to delete compiled data.
+Run ```ant clean``` to delete generated files.
 
-On a Windows system you can compile and install by using the BAT-files
-in the develop/bat directory, and run the system from the BAT-files in
-the test/bin/pc directory.
+On a Windows system you can compile and install by using the BAT-files in the develop/bat directory, and run the system from the BAT-files in the test/bin/pc directory.
+
+## Run
+
+### Unix
+
+1. Run ```test/bin/unix/r1_httpd.sh```
+2. Run ```test/bin/unix/r2_rmid.sh```
+3. Run ```test/bin/unix/r3_reggie.sh```
+4. Run three times with different ids: ```lab2v13/test/bin/unix/bailiff.sh -id b1```
+5. Run ```lab2v13/test/bin/unix/dexter.sh -id d1 -debug```
+
+### Windows
+
+1. Run ```test/bin/pc/r1_httpd.bat```
+2. Run ```test/bin/pc/r2_rmid.bat```
+3. Run ```test/bin/pc/r3_reggie.bat```
+4. Run three times with different ids: ```lab2v13/test/bin/unix/bailiff.bat -id b1```
+5. Run ```lab2v13/test/bin/unix/dexter.bat -id d1 -debug```
 
 ## The TAG assignment
 

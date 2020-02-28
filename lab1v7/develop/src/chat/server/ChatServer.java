@@ -12,14 +12,6 @@ package chat.server;
 
 // Standard Java
 
-import net.jini.core.entry.Entry;
-import net.jini.core.event.RemoteEventListener;
-import net.jini.core.event.UnknownEventException;
-import net.jini.core.lookup.ServiceID;
-import net.jini.lookup.JoinManager;
-import net.jini.lookup.ServiceIDListener;
-import net.jini.lookup.entry.Name;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

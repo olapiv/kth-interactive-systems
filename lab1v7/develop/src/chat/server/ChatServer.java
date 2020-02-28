@@ -26,17 +26,12 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 // Jini
-
 import net.jini.core.entry.Entry;
-
 import net.jini.core.event.RemoteEventListener;
 import net.jini.core.event.UnknownEventException;
-
 import net.jini.core.lookup.ServiceID;
-
 import net.jini.lookup.JoinManager;
 import net.jini.lookup.ServiceIDListener;
-
 import net.jini.lookup.entry.Name;
 
 /**
@@ -119,12 +114,11 @@ public class ChatServer
 
     // Create an IDListener instance to tell us when we have
     // registered with a lookup server.
-    ServiceIDListener sidListener =
-      new ServiceIDListener () {
-	public void serviceIDNotify (ServiceID sid) {
+    ServiceIDListener sidListener = new ServiceIDListener () {
+	    public void serviceIDNotify (ServiceID sid) {
 	  System.out.println("Registered as a Jini service " + sid);
 	}
-      };
+    };
 
     // Create a Join manager that will hunt out any Jini lookup servers
     // out there and register us with them.
@@ -271,23 +265,21 @@ public class ChatServer
   public void run () {
 
     while (runDelivery) {
-
       String msg = getNextMessage ();
       if (msg != null) {
-	// Prepare a notification
-	ChatNotification note = new ChatNotification (this, msg, msgCount);
-	// Send it to all registered listeners.
-	synchronized (clients) {
-	  try {
-	    for (RemoteEventListener rel : clients)
-	      rel.notify (note);
-	  }
-	  catch (UnknownEventException uex) {}
-	  catch (RemoteException rex) {}
-	}
-      }
-      else {
-	snooze ();
+        // Prepare a notification
+        ChatNotification note = new ChatNotification (this, msg, msgCount);
+        // Send it to all registered listeners.
+        synchronized (clients) {
+          try {
+            for (RemoteEventListener rel : clients)
+              rel.notify (note);
+          }
+          catch (UnknownEventException uex) {}
+          catch (RemoteException rex) {}
+        }
+      } else {
+	    snooze ();
       }
     } // while runDelivery
 
@@ -308,39 +300,39 @@ public class ChatServer
       System.out.flush ();
       String buf = null;
       try {
-	buf = d.readLine ();
+	    buf = d.readLine ();
       }
       catch (java.io.IOException iox) {
-	iox.printStackTrace ();
-	System.out.println ("\nI/O error in command interface.");
-	halted = true;
-	continue;
+        iox.printStackTrace ();
+        System.out.println ("\nI/O error in command interface.");
+        halted = true;
+        continue;
       }
 
       if (buf == null) { // EOF on System.in
-	halted = true;
-	continue;
+        halted = true;
+        continue;
       }
 
       String arg = buf.trim ();
 
       if (arg.length () == 0) { // The empty string
-	continue;
+	    continue;
       }
 
       if (arg.equalsIgnoreCase ("quit") ||
-	  arg.equalsIgnoreCase ("stop") ||
-	  arg.equalsIgnoreCase ("halt") ||
-	  arg.equalsIgnoreCase ("exit")) {
-	halted = true;
+          arg.equalsIgnoreCase ("stop") ||
+          arg.equalsIgnoreCase ("halt") ||
+          arg.equalsIgnoreCase ("exit")
+      ) {
+	    halted = true;
       }
       else if (arg.equalsIgnoreCase ("help")) {
-	System.out.println ("Available commands:");
-	System.out.println ("quit      Shuts down the server.");
-	System.out.println ("help      This text.");
-      }
-      else {
-	System.out.println ("\nUnknown server command : " + arg);
+        System.out.println ("Available commands:");
+        System.out.println ("quit      Shuts down the server.");
+        System.out.println ("help      This text.");
+      } else {
+	    System.out.println ("\nUnknown server command : " + arg);
       }
     }
 
@@ -378,24 +370,21 @@ public class ChatServer
     for (int i = 0; i < argv.length; i++) {
       String av = argv[i];
       if (state == 0) {
-	if (av.equalsIgnoreCase ("-n")) {
-	  state = 1;
-	}
-	else if (av.equals("?") ||
-		 av.equalsIgnoreCase ("-h") ||
-		 av.equalsIgnoreCase ("-help") ||
-		 av.equalsIgnoreCase ("--help")) {
-	  usage ();
-	  return;
-	}
-	else {
-	  System.out.printf("Unknown commandline option:%s%n", av);
-	  return;
-	}
-      }
-      else if (state == 1) {
-	serverName = av;
-	state = 0;
+        if (av.equalsIgnoreCase ("-n")) {
+          state = 1;
+        } else if (av.equals("?") ||
+             av.equalsIgnoreCase ("-h") ||
+             av.equalsIgnoreCase ("-help") ||
+             av.equalsIgnoreCase ("--help")) {
+          usage ();
+          return;
+        } else {
+          System.out.printf("Unknown commandline option:%s%n", av);
+          return;
+        }
+      } else if (state == 1) {
+        serverName = av;
+        state = 0;
       }
     }
 

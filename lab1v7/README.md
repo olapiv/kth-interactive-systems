@@ -42,12 +42,13 @@ raised from Java 1.4 to be compatible with Java 5, 6, 7, and 8.
 
 Required:
 - Java SDK 1.5 or later
+
 Helpful:
 - ant - available from ant.apache.org and is used to compile, build, and install the software. Instructions for ant are 
 in the file [build.xml](./develop/build.xml). As an alternative to ant, the [develop/bat](./develop/bat) directory contains Windows BAT-files that help with compilation, building, 
 and installation.
 
-In order to build and install the software by other means than ant or Windows BAT-files, the general outline is this 
+In order to build and install the software **by other means than ant or Windows BAT-files**, the general outline is this 
 (see [build.xml](./develop/build.xml) for details).
 
 1. Compile the sources into class files, using the provided libraries. The [develop/build](./develop/build) directory 

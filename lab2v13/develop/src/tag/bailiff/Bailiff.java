@@ -103,52 +103,9 @@ public class Bailiff
      */
     private class Agitator extends Thread {
 
-        protected Dexter myObj;    // The client object
-        protected String myCb;    // The name of the entry point method
-        protected Object[] myArgs;    // Arguments to the entry point method
-        protected java.lang.reflect.Method myMethod; // Ref. to entry point method
-        protected Class[] myParms; // Class reflection of arguments
-
-        /**
-         * Creates a new Agitator by copying th references to the client
-         * object, the name of the entry method and the arguments to
-         * the entry method.
-         *
-         * @param obj  The client object, holding the method to execute
-         * @param cb   The name of the entry point method (callback)
-         * @param args Arguments to the entry point method
-         */
-        public Agitator(Dexter obj, String cb, Object[] args) {
+        protected Dexter myObj;
+        public Agitator(Dexter obj) {
             myObj = obj;
-            myCb = cb;
-            myArgs = args;
-
-            // If the array of arguments are non-zero we must create an array
-            // of Class so that we can match the entry point method's name with
-            // the parameter signature. So, the myParms[] array is loaded with
-            // the class of each entry point parameter.
-
-            if (0 < args.length) {
-                myParms = new Class[args.length];
-                for (int i = 0; i < args.length; i++) {
-                    myParms[i] = args[i].getClass();
-                }
-            } else {
-                myParms = null;
-            }
-        }
-
-        /**
-         * This method locates the method that is the client object's requested
-         * entry point. It also sets the classloader of the current instance
-         * to follow the client's classloader.
-         *
-         * @throws NoSuchMethodException Thrown if the entry point specified
-         *                               in the constructor can not be found.
-         */
-        public void initialize() throws java.lang.NoSuchMethodException {
-            myMethod = myObj.getClass().getMethod(myCb, myParms);
-            setContextClassLoader(myObj.getClass().getClassLoader());
         }
 
         /**
@@ -159,14 +116,14 @@ public class Bailiff
             try {
                 players.put(myObj.getId(), myObj);
                 myObj.setCurrentBailiff(Bailiff.this);
-                myObj.topLevel();
+                myObj.run();
             } catch (Throwable t) {
                 log.severe(t.toString());
             } finally {
                 players.remove(myObj.getId());
             }
         }
-    } // class Agitator
+    }
 
     /* ================ B a i l i f f I n t e r f a c e ================ */
 
@@ -226,17 +183,9 @@ public class Bailiff
      * @throws NoSuchMethodException Thrown if the specified entry method
      *                               does not exist with the expected signature.
      */
-    public void migrate(Dexter obj, String cb, Object[] args)
-            throws
-            java.rmi.RemoteException, NoSuchMethodException {
-
-        log.fine(String.format("migrate obj=%s cb=%s args=%s",
-                obj.toString(),
-                cb,
-                Arrays.toString(args)));
-
-        Agitator agt = new Agitator(obj, cb, args);
-        agt.initialize();
+    public void migrate(Dexter obj) throws java.rmi.RemoteException, NoSuchMethodException {
+        log.fine(String.format("migrate obj=%s", obj.toString()));
+        Agitator agt = new Agitator(obj);
         agt.start();
     }
 

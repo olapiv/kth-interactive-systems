@@ -48,7 +48,7 @@ public interface BailiffInterface
      *                                         callback is not found (which happen if the name is spelled wrong,
      *                                         the number of arguments is wrong or are of the wrong type).
      */
-    public void migrate(Dexter obj, String cb, Object[] args)
+    public void migrate(Dexter obj)
             throws
             java.rmi.RemoteException,
             java.lang.NoSuchMethodException;

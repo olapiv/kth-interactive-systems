@@ -1,6 +1,3 @@
-// Dexter.java
-// 2018-08-15/fki Refactored from v11
-
 package tag.dexter;
 
 import net.jini.core.lookup.ServiceItem;
@@ -33,7 +30,7 @@ public class Dexter implements Serializable {
     private long restraintSleepMs = 5000;
 
     /**
-     * The jump count variable is incremented each time method topLevel
+     * The jump count variable is incremented each time method run
      * is entered. Its value is printed by the debugMsg routine.
      */
     private int jumpCount = 0;
@@ -72,7 +69,7 @@ public class Dexter implements Serializable {
 
     /**
      * This Jini service template is created in Dexter's constructor and
-     * used in the topLevel method to find Bailiffs. The service
+     * used in the run method to find Bailiffs. The service
      * template IS serializable so Dexter only needs to instantiate it
      * once.
      */
@@ -195,7 +192,7 @@ public class Dexter implements Serializable {
      * to migrate to that Bailiff. If the ping or the migration fails, Dexter
      * gives up on that Bailiff and tries another.
      */
-    public void topLevel() throws java.io.IOException {
+    public void run() throws java.io.IOException {
         SDM = new ServiceDiscoveryManager(null, null);
         debugMsg("Sleeping...");
         snooze(isIt ? restraintSleepMs : (long) (restraintSleepMs * 0.8));
@@ -246,13 +243,13 @@ public class Dexter implements Serializable {
                 return;
             }
         }
-    }   // topLevel
+    }
 
     private void jump(BailiffInterface bfi) {
         try {
             debugMsg("Jumping to: " + bfi.getProperty("id"));
             jumpCount++;
-            bfi.migrate(this, "topLevel", new Object[]{});
+            bfi.migrate(this);  // Creates and starts Agitator in Bailiff.
             SDM.terminate();
         } catch (RemoteException | NoSuchMethodException rex) {
             rex.printStackTrace();
@@ -260,9 +257,9 @@ public class Dexter implements Serializable {
     }
 
     private BailiffInterface[] findActiveBailiffs() {
-        ServiceItem[] svcItems = new ServiceItem[0];
+        ServiceItem[] svcItems = new ServiceItem[0];  // External library
         while (svcItems.length == 0) {
-            svcItems = SDM.lookup(bailiffTemplate, maxResults, null);
+            svcItems = SDM.lookup(bailiffTemplate, maxResults, null);  // External library
             if (svcItems.length == 0) {
                 debugMsg("No connected bailiffs found. Sleeping...");
                 snooze(retrySleep);
@@ -300,24 +297,18 @@ public class Dexter implements Serializable {
     }
 
     // The main method is only used by the initial launch. After the
-    // first jump, Dexter always restarts in method topLevel.
-
+    // first jump, Dexter always restarts in method run.
     public static void main(String[] argv)
             throws
             java.io.IOException, java.lang.ClassNotFoundException {
 
         // Make a new Dexter and configure it from commandline arguments.
-
         Dexter dx = new Dexter();
 
         // Parse and act on the commandline arguments.
-
         int state = 0;
-
         for (String av : argv) {
-
             switch (state) {
-
                 case 0:
                     if (av.equals("?") || av.equals("-h") || av.equals("-help")) {
                         showUsage();
@@ -359,10 +350,10 @@ public class Dexter implements Serializable {
                     dx.setMaxResults(Integer.parseInt(av));
                     state = 0;
                     break;
-            }    // switch
-        }    // for all commandline arguments
+            }
+        }
 
-        dx.topLevel();        // Start the Dexter
+        dx.run();
 
-    } // main
+    }
 }

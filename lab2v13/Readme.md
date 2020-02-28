@@ -1,11 +1,9 @@
 # Game of Tag for Mobile Agents
 
-This is lab TAG, the game of Tag for mobile agents.
+This is lab TAG, the game of Tag for mobile agents. It consists of:
 
-This distribution contains the working source code for:
-
-* tag.bailiff - A Jini-aware execution service for mobile Java code.
-* tag.dexter - A small agent that jumps randomly between Bailiffs
+* bailiff - A Jini-aware execution service for mobile Java code.
+* dexter - A small agent that jumps randomly between Bailiffs
 
 ## Install
 

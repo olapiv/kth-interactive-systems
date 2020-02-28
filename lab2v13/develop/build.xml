@@ -59,6 +59,7 @@
 	 includes="**/Bailiff$$Agitator.class
 	           **/Bailiff$$1.class
 		   **/Bailiff.class
+		   **/Dexter.class
 		   **/BailiffInterface.class">
     </jar>
 

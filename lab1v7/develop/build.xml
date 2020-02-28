@@ -57,6 +57,7 @@ Target "all" is run if no target is specified when run. -->
          destfile="${dir.dist}/${clientcapsname}.jar"
          manifest="${dir.manifest}/${clientcapsname}.manifest"
          includes="**/ChatClient.class
+                   **/Message.class
                    **/ChatNotification.class
                    **/ChatServerInterface.class">
     </jar>
@@ -65,6 +66,7 @@ Target "all" is run if no target is specified when run. -->
          destfile="${dir.dist}/${servercapsname}.jar"
          manifest="${dir.manifest}/${servercapsname}.manifest"
          includes="**/ChatServer.class
+                   **/Message.class
                    **/ChatNotification.class
                    **/ChatServerInterface.class
                    **/ChatServer$$1.class">

@@ -10,12 +10,12 @@ This distribution contains the working source code for:
 ## Install
 
 1. Install ant (http://ant.apache.org/)
-2. Compile sources and compose the through jar-filesdevelop/build.xml file with ant: ```ant```
+2. Compile sources and compose the jar-files with the develop/build.xml file using ant: ```ant```.
 3. Install jar-files in test branch: ```ant install```
 
 Run ```ant clean``` to delete generated files.
 
-On a Windows system you can compile and install by using the BAT-files in the develop/bat directory, and run the system from the BAT-files in the test/bin/pc directory.
+On a Windows system you can also compile and install by using the BAT-files in the develop/bat directory.
 
 ## Run
 

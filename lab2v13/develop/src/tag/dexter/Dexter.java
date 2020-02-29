@@ -195,7 +195,7 @@ public class Dexter implements Serializable {
     public void run() throws java.io.IOException {
         SDM = new ServiceDiscoveryManager(null, null);
         debugMsg("Sleeping...");
-        snooze(isIt ? restraintSleepMs : (long) (restraintSleepMs * 0.8));
+        snooze(isIt ? (long) (restraintSleepMs * 0.8) : restraintSleepMs);
         Random rnd = new Random();
 
         if (isIt && currentBailiff != null) {

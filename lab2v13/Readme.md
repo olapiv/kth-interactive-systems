@@ -39,38 +39,17 @@ The challenge is to create the Game of Tag for mobile software agents.
 
 The game of tag is a child's game, played minimally by two players. It is very simple. One player is choosen to be 'it'. That player's task is to run up to one of the other players and touch him or her, saying "You're it!", whereupon the 'it' property and the associated task is transferred to the other player. The players who are currently not 'it', try to evade being tagged, usually by running and hiding.
 
-Starting from the provided software, you must design and implement the game of tag for at least three mobile agents. The playfield consists of three or more Bailiffs (execution servers).
+In this assignment, the agents ("Dexters") can be hosted by the execution servers ("Bailiffs"). The agent that "is it" can only tag other agents that are being hosted on the same Bailiff.
 
-You can modify the given sources freely, and add classes and interfaces as desired.
+### Requirements of Task
 
-There are two important requirements on which the game's implementation depend:
+1. Implement the game of tag for >3 mobile agents and >3 Bailiffs (execution servers)
+2. Tagging can only be done between players in the same Bailiff
+3. The tag (the 'it' property) must be passed reliably from one player to another. It must not be lost or duplicated during the transaction.
 
-1. tagging can only be done between players in the same Bailiff
-2. the tag (the 'it' property) must be passed reliably from one player to another. It must not be lost or duplicated during the transaction.
+The Jini middleware can help each player to dynamically discover and communicate with Bailiffs.
 
-From the given code (Dexter) we see how the Jini middleware can help each player to dynamically discover and communicate with Bailiffs.
-
-From (1) we realise that a player needs to know how the other players are distributed among the Bailiffs. The player being 'it' needs to find a Bailiff with players in it, move there, select a victim, and then attempt to tag that victim. The other players all want to know where the player being 'it' is located, so that they can avoid being tagged, by moving to another Bailiff if the player being 'it' arrives in their Bailiff.
-
-So, here is what is needed:
-
-1. Each player can be either 'it' or 'not it', and depending on what it currently is, its behaviour changes appropriately.
-
-1. A player needs cooperation from the Bailiffs so that is can:
-    * Get a list of players currently located in a Bailiff
-    * Query each player if they are 'it' or not.
-    * Try to tag a player
-
-1. From 2. it follows that each player must have a unique id, so
-  that it can:
-   * Recognise itself in a list of players (b.1)
-   * Specify some other player (b.2 and b.3)
-
-1. Finally, there must be some mechanism that determines exactly if a player can be tagged or not. This has to do with the way mobility actually works. When a mobile object (e.g. a player) 'moves' from one Bailiff to another, it does not really move at all. It sends a copy of itself to the other Bailiff, and if the copy was successful, the original object terminates its thread of execution and goes to garbage collection. Thus, if a player is tagged at the wrong moment, the copy of the player that moved away stays untagged, while the original object instance is tagged instead. When the original instance dies, it takes the 'it' property with it into oblivion, and the tag is lost from the game.
-
-There are several possible implementation strategies, and work can be divided between players and Bailiffs to reduce the workload of the players. This is a design choice, but you will need to expand the BailiffInterface to support the game, in particular b.1, b.2 and b.3. That said, the list returned in b.1 could contain additional information beside player id:s; for example, 'this is you' and 'this player currently is it'. That would reduce the number of additional remote method calls that a player otherwise would have to make.
-
-Other possible services offered by the Bailiff could be a predicate if it contains the player being it, or a function that returns the current number of players in it. The number of new methods in the Bailiff required to implement the game is usually no more than three, depending on the solution design.
+When a mobile object (e.g. a player) 'moves' from one Bailiff to another, it does not really move at all. It sends a copy of itself to the other Bailiff, and if the copy was successful, the original object terminates its thread of execution and goes to garbage collection. Thus, if a player is tagged at the wrong moment, the copy of the player that moved away stays untagged, while the original object instance is tagged instead. When the original instance dies, it takes the 'it' property with it into oblivion, and the tag is lost from the game.
 
 ### Let the Bailiff mediate player-to-player communication
 
@@ -166,31 +145,6 @@ There is no requirement to implement alternative non-tagged behaviours, but you 
 ### Player delays
 
 In order to be able to follow the progress of a game at human speeds delays are required. It is difficult to give good recommendations for these, but a general move delay of 3-5 seconds may be a good starting point. You may also want to give each player a bit of random variation on the order of 50-250 ms so that they slide out of lock-step behaviour. In particular, a player being 'it' could be awarded a slightly shorter delay to give it some edge and make successful tagging more likely.
-
-### Player identification
-
-Players need to have universially unique names (identifers) so that they can be uniquely addressed. Let the agent generate its own UUID when it starts, and then keep this name while it plays (see java.util.UUID.randomUUID()). So, rather than having the Bailiff assign the agent a temporary id when it arrives, the Bailiff asks the agent what id it has.
-
-### Doing the work
-
-First, study the provided sources and learn how the programs work. Then go back to the instruction earlier in this text, and start planning:
-
-* what to do
-* where to do it (i.e. which files do you need to modify)
-* how to do it (checklists, editors)
-* how to determine if it works (testing, debugging)
-
-You will need the Bailiff, and you will need to make changes to it. The player agent can be created by modifying Dexter, or by creating an entirely new agent. There is no right or wrong here, but it may be easier to recompile things if you keep Dexter and just change its code, even if that means a lot of changes. But your are free to make any changes you see fit, adding or dropping classes etc.
-
-When your plan is done, make sure you can compile and run the system BEFORE you start modifying it.
-
-Then implement the changes. If you can, start with something small and confirm that it works as you intended.
-
-When you get compilation errors, read them carefully and remember that the first error is usually the significant one. Subsequent errors often follow as a consequense of the first problem.
-
-When you get run-time exceptions, read them carefully and try to understand what is happening. Remember that exceptions are usually nested, meaning that the critical point of failure is to be found near the top of the list. An exception in the Bailiff will print in the Bailiff console, in the normal way. An exception in a player also prints in the Bailiff console, but if it is wrapped in a RemoteException then the exception actually happened in a Bailiff, or in a player hosted by a Bailiff:
-
-Online documentation for the Java API is here: http://download.oracle.com/javase/8/docs/api/
 
 ### Examination
 
